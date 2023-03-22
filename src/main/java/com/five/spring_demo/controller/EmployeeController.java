@@ -36,14 +36,19 @@ public class EmployeeController {
         else if (emp.getStatus() == 0) {
             return R.error("用户已禁用");
         }
-        request.getSession().setAttribute("employeeId", emp.getId());
+        request.getSession().setAttribute("employee", emp.getId());
         return R.success(emp);
     }
 
     @PostMapping("/logout")
     R<String> logout(HttpServletRequest request) {
-        request.getSession().removeAttribute("employeeId");
+        request.getSession().removeAttribute("employee");
         return R.success("退出成功");
+    }
+
+    @GetMapping("/page")
+    String getPage(@RequestParam("page") int page, @RequestParam("pageSize") int maxSize) {
+        return "213";
     }
 
 }

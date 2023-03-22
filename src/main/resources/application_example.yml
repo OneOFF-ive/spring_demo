@@ -4,9 +4,9 @@ spring:
   datasource:
     druid:
       driver-class-name: com.mysql.cj.jdbc.Driver
-      url: jdbc:mysql://139.196.48.244:4407/reggie
-      username: wu
-      password: Wzh913000
+      url: jdbc:mysql://localhost:3306/database
+      username: username
+      password: password
   mvc:
     path match:
       matching-strategy: ant_path_matcher
