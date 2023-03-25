@@ -73,4 +73,22 @@ public class EmployeeController {
         return R.success(pageInfo);
     }
 
+    @PutMapping
+    public R<String> updateEmployee(HttpServletRequest request, @RequestBody Employee employee) {
+        log.info(employee.toString());
+        Long empId = (Long) request.getSession().getAttribute("employee");
+        LambdaQueryWrapper<Employee> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(Employee::getId, empId);
+        Employee emp = employeeService.getOne(queryWrapper);
+        if (!Objects.equals(emp.getUsername(), "admin")) {
+            return R.error("没有权限");
+        }
+        employee.setUpdateUser(empId);
+        employee.setUpdateTime(LocalDateTime.now());
+        if (employeeService.updateById(employee)) {
+            return R.success("修改成功");
+        }
+        return R.error("修改失败");
+    }
+
 }
