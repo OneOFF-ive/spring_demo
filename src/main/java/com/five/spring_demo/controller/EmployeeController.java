@@ -27,7 +27,7 @@ public class EmployeeController {
     }
 
     @PostMapping("/login")
-    public R<Employee> login(HttpServletRequest request, @RequestBody Employee employee){
+    public R<Employee> login(HttpServletRequest request, @RequestBody Employee employee) {
         String password = DigestUtils.md5DigestAsHex(employee.getPassword().getBytes());
         LambdaQueryWrapper<Employee> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(Employee::getUsername, employee.getUsername());
@@ -35,8 +35,7 @@ public class EmployeeController {
 
         if (emp == null || !Objects.equals(emp.getPassword(), password)) {
             return R.error("登陆失败");
-        }
-        else if (emp.getStatus() == 0) {
+        } else if (emp.getStatus() == 0) {
             return R.error("用户已禁用");
         }
         request.getSession().setAttribute("employee", emp.getId());
@@ -67,7 +66,7 @@ public class EmployeeController {
     R<Page<Employee>> getPage(@RequestParam("page") int page, @RequestParam("pageSize") int pageSize, String name) {
         Page<Employee> pageInfo = new Page<>(page, pageSize);
         LambdaQueryWrapper<Employee> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.like(StringUtils.isNotEmpty(name),Employee::getName, name);
+        queryWrapper.like(StringUtils.isNotEmpty(name), Employee::getName, name);
         queryWrapper.orderByDesc(Employee::getUpdateTime);
         employeeService.page(pageInfo, queryWrapper);
         return R.success(pageInfo);
@@ -76,19 +75,28 @@ public class EmployeeController {
     @PutMapping
     public R<String> updateEmployee(HttpServletRequest request, @RequestBody Employee employee) {
         log.info(employee.toString());
-        Long empId = (Long) request.getSession().getAttribute("employee");
-        LambdaQueryWrapper<Employee> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.eq(Employee::getId, empId);
-        Employee emp = employeeService.getOne(queryWrapper);
-        if (!Objects.equals(emp.getUsername(), "admin")) {
+
+        if (!employeeService.isAdmin(request)) {
             return R.error("没有权限");
         }
+
+        Long empId = (Long) request.getSession().getAttribute("employee");
         employee.setUpdateUser(empId);
         employee.setUpdateTime(LocalDateTime.now());
         if (employeeService.updateById(employee)) {
             return R.success("修改成功");
         }
         return R.error("修改失败");
+    }
+
+    @GetMapping("/{employeeId}")
+    public R<Employee> getEmployeeById(@PathVariable String employeeId) {
+        Long empId = Long.valueOf(employeeId);
+        Employee emp = employeeService.getById(empId);
+        if (emp != null) {
+            return R.success(emp);
+        }
+        return R.error(null);
     }
 
 }
