@@ -1,10 +1,12 @@
 package com.five.spring_demo.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.five.spring_demo.common.R;
 import com.five.spring_demo.entity.Employee;
 import com.five.spring_demo.service.EmployeeService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -62,8 +64,13 @@ public class EmployeeController {
     }
 
     @GetMapping("/page")
-    String getPage(@RequestParam("page") int page, @RequestParam("pageSize") int maxSize) {
-        return "213";
+    R<Page<Employee>> getPage(@RequestParam("page") int page, @RequestParam("pageSize") int pageSize, String name) {
+        Page<Employee> pageInfo = new Page<>(page, pageSize);
+        LambdaQueryWrapper<Employee> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.like(StringUtils.isNotEmpty(name),Employee::getName, name);
+        queryWrapper.orderByDesc(Employee::getUpdateTime);
+        employeeService.page(pageInfo, queryWrapper);
+        return R.success(pageInfo);
     }
 
 }

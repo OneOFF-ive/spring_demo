@@ -16,8 +16,10 @@ public class LoginCheckInterceptor implements HandlerInterceptor {
 
         if (request.getSession().getAttribute("employee") == null) {
             response.getWriter().write(JSON.toJSONString(R.error("NOTLOGIN")));
+            log.info("拦截未通过:{}", request.getRequestURI());
             return false;
         }
+        log.info("拦截通过:{}", request.getRequestURI());
         return true;
     }
 }
