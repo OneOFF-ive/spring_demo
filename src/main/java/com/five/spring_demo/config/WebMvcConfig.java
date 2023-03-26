@@ -15,6 +15,7 @@ import java.util.List;
 @Slf4j
 @Configuration
 public class WebMvcConfig extends WebMvcConfigurationSupport {
+
     @Override
     protected void addResourceHandlers(ResourceHandlerRegistry registry) {
 
@@ -38,6 +39,7 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
 
     /**
      * 扩展MVC消息转换器
+     *
      * @param converters
      */
     @Override

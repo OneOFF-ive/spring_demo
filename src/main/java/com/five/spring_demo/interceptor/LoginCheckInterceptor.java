@@ -1,6 +1,7 @@
 package com.five.spring_demo.interceptor;
 
 import com.alibaba.fastjson.JSON;
+import com.five.spring_demo.common.BaseContext;
 import com.five.spring_demo.common.R;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -10,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 @Slf4j
 public class LoginCheckInterceptor implements HandlerInterceptor {
+
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         log.info("拦截到请求:{}", request.getRequestURI());
@@ -20,6 +22,7 @@ public class LoginCheckInterceptor implements HandlerInterceptor {
             return false;
         }
         log.info("拦截通过:{}", request.getRequestURI());
+        BaseContext.setCurrentId((Long) request.getSession().getAttribute("employee"));
         return true;
     }
 }

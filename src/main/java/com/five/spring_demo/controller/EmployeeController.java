@@ -21,7 +21,6 @@ public class EmployeeController {
 
     private final EmployeeService employeeService;
 
-
     public EmployeeController(EmployeeService employeeService) {
         this.employeeService = employeeService;
     }
@@ -51,14 +50,12 @@ public class EmployeeController {
     @PostMapping
     R<String> saveEmployee(HttpServletRequest request, @RequestBody Employee employee) {
         employee.setPassword(DigestUtils.md5DigestAsHex("123456".getBytes()));
-        employee.setCreateTime(LocalDateTime.now());
-        employee.setUpdateTime(LocalDateTime.now());
-        Long empId = (Long) request.getSession().getAttribute("employee");
-        employee.setCreateUser(empId);
-        employee.setUpdateUser(empId);
-
+//        employee.setCreateTime(LocalDateTime.now());
+//        employee.setUpdateTime(LocalDateTime.now());
+//        Long empId = (Long) request.getSession().getAttribute("employee");
+//        employee.setCreateUser(empId);
+//        employee.setUpdateUser(empId);
         employeeService.save(employee);
-
         return R.success("新增员工成功");
     }
 
@@ -74,15 +71,13 @@ public class EmployeeController {
 
     @PutMapping
     public R<String> updateEmployee(HttpServletRequest request, @RequestBody Employee employee) {
-        log.info(employee.toString());
-
         if (!employeeService.isAdmin(request)) {
             return R.error("没有权限");
         }
 
-        Long empId = (Long) request.getSession().getAttribute("employee");
-        employee.setUpdateUser(empId);
-        employee.setUpdateTime(LocalDateTime.now());
+//        Long empId = (Long) request.getSession().getAttribute("employee");
+//        employee.setUpdateUser(empId);
+//        employee.setUpdateTime(LocalDateTime.now());
         if (employeeService.updateById(employee)) {
             return R.success("修改成功");
         }
