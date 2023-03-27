@@ -11,7 +11,6 @@ import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Slf4j
@@ -50,11 +49,6 @@ public class EmployeeController {
     @PostMapping
     R<String> saveEmployee(HttpServletRequest request, @RequestBody Employee employee) {
         employee.setPassword(DigestUtils.md5DigestAsHex("123456".getBytes()));
-//        employee.setCreateTime(LocalDateTime.now());
-//        employee.setUpdateTime(LocalDateTime.now());
-//        Long empId = (Long) request.getSession().getAttribute("employee");
-//        employee.setCreateUser(empId);
-//        employee.setUpdateUser(empId);
         employeeService.save(employee);
         return R.success("新增员工成功");
     }
@@ -75,9 +69,6 @@ public class EmployeeController {
             return R.error("没有权限");
         }
 
-//        Long empId = (Long) request.getSession().getAttribute("employee");
-//        employee.setUpdateUser(empId);
-//        employee.setUpdateTime(LocalDateTime.now());
         if (employeeService.updateById(employee)) {
             return R.success("修改成功");
         }
