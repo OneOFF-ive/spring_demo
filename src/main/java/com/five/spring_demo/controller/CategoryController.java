@@ -20,7 +20,7 @@ public class CategoryController {
     private CategoryService categoryService;
 
     @PostMapping
-    R<String> generateCategory(@RequestBody Category category) {
+    R<String> save(@RequestBody Category category) {
         log.info("category:{}", category);
         if (categoryService.save(category)) {
 
@@ -37,5 +37,16 @@ public class CategoryController {
         categoryService.page(pageInfo, queryWrapper);
         return R.success(pageInfo);
     }
+
+    @DeleteMapping("/{ids}")
+    R<String> delete(@PathVariable String ids) {
+        LambdaQueryWrapper<Category> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(Category::getId, ids);
+        if (categoryService.removeById(ids)) {
+            return R.success("删除成功");
+        }
+        return R.error("删除失败");
+    }
+
 
 }
