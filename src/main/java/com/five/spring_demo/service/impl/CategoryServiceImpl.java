@@ -38,4 +38,19 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
         }
         return super.removeById(id);
     }
+
+    @Override
+    public boolean update(Category category) {
+        LambdaQueryWrapper<Dish> dishQueryWrapper = new LambdaQueryWrapper<>();
+        dishQueryWrapper.eq(Dish::getCategoryId, category.getId());
+        if (dishService.count(dishQueryWrapper) > 0) {
+            throw new CustomException("当前分类关联菜品信息，不能修改");
+        }
+        LambdaQueryWrapper<Setmeal> setmealQueryWrapper = new LambdaQueryWrapper<>();
+        setmealQueryWrapper.eq(Setmeal::getCategoryId, category.getId());
+        if (setmealService.count(setmealQueryWrapper) > 0) {
+            throw new CustomException("当前分类关联套餐信息，不能修改");
+        }
+        return super.updateById(category);
+    }
 }

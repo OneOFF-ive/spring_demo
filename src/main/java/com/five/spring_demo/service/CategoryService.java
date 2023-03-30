@@ -5,4 +5,6 @@ import com.five.spring_demo.entity.Category;
 
 public interface CategoryService extends IService<Category> {
     boolean remove(Long id);
+
+    boolean update(Category category);
 }

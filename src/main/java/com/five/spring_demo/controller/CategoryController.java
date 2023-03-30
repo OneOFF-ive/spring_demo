@@ -42,5 +42,12 @@ public class CategoryController {
         return R.success("删除成功");
     }
 
+    @PutMapping
+    R<String> update(@RequestBody Category category) {
+        log.info("category: {}", category);
+        categoryService.update(category);
+        return R.success("更新成功");
+    }
+
 
 }
