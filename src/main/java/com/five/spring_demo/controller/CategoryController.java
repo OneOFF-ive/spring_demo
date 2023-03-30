@@ -4,10 +4,8 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.five.spring_demo.common.R;
 import com.five.spring_demo.entity.Category;
-import com.five.spring_demo.entity.Employee;
 import com.five.spring_demo.service.CategoryService;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -38,14 +36,10 @@ public class CategoryController {
         return R.success(pageInfo);
     }
 
-    @DeleteMapping("/{ids}")
-    R<String> delete(@PathVariable String ids) {
-        LambdaQueryWrapper<Category> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.eq(Category::getId, ids);
-        if (categoryService.removeById(ids)) {
-            return R.success("删除成功");
-        }
-        return R.error("删除失败");
+    @DeleteMapping
+    R<String> delete(@RequestParam("ids") Long ids) {
+        categoryService.remove(ids);
+        return R.success("删除成功");
     }
 
 
