@@ -9,6 +9,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Slf4j
 @RestController
 @RequestMapping("/category")
@@ -48,6 +50,8 @@ public class CategoryController {
         categoryService.update(category);
         return R.success("更新成功");
     }
-
+//
+//    @GetMapping("/list")
+//    R<List<>>
 
 }
