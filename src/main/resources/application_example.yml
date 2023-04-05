@@ -22,3 +22,6 @@ mybatis-plus:
     db-config:
       id-type: ASSIGN_ID
   mapper-locations: "classpath:/mapper/**/*.xml"
+
+reggie:
+  path: "D:\\"
