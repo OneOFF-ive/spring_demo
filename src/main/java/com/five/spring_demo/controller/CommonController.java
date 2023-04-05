@@ -6,6 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.ServletOutputStream;
@@ -16,7 +17,7 @@ import java.io.IOException;
 import java.util.Objects;
 import java.util.UUID;
 
-@Controller
+@RestController
 @RequestMapping("/common")
 public class CommonController {
 
@@ -37,11 +38,10 @@ public class CommonController {
 
         try {
             file.transferTo(new File(basePath + fileName));
-            return R.success("上传成功");
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return R.error("上传失败");
+        return R.success(fileName);
     }
 
     @GetMapping("/download")
