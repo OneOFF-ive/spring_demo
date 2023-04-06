@@ -1,6 +1,8 @@
 package com.five.spring_demo.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.five.spring_demo.common.CustomException;
 import com.five.spring_demo.dto.SetmealDto;
 import com.five.spring_demo.entity.Setmeal;
 import com.five.spring_demo.entity.SetmealDish;
@@ -28,5 +30,22 @@ public class SetmealServiceImpl extends ServiceImpl<SetmealMapper, Setmeal> impl
         List<SetmealDish> setmealDishes = setmealDto.getSetmealDishes();
         setmealDishes.stream().peek(setmealDish -> setmealDish.setSetmealId(setmealId)).collect(Collectors.toList());
         setMealDishService.saveBatch(setmealDishes);
+    }
+
+    @Override
+    @Transactional
+    public void removeWithDish(List<Long> ids) {
+        LambdaQueryWrapper<Setmeal> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.in(Setmeal::getId, ids);
+        queryWrapper.eq(Setmeal::getStatus, 1);
+        int count =  this.count(queryWrapper);
+        if (count > 0) {
+            throw new CustomException("套餐正在售卖中，不能删除");
+        }
+        this.removeByIds(ids);
+
+        LambdaQueryWrapper<SetmealDish> setmealDishLambdaQueryWrapper =new LambdaQueryWrapper<>();
+        setmealDishLambdaQueryWrapper.in(SetmealDish::getSetmealId, ids);
+        setMealDishService.remove(setmealDishLambdaQueryWrapper);
     }
 }

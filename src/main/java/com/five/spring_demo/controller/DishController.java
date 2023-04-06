@@ -80,9 +80,9 @@ public class DishController {
     }
 
     @PostMapping("/status/{status}")
-    R<String> updateStatus(@RequestParam("ids") Long[] ids, @PathVariable String status) {
+    R<String> updateStatus(@RequestParam("ids") List<Long> ids, @PathVariable String status) {
         UpdateWrapper<Dish> updateWrapper = new UpdateWrapper<>();
-        updateWrapper.in("id", (Object[]) ids)
+        updateWrapper.in("id", ids)
                         .set("status", status);
         dishService.update(updateWrapper);
         return R.success("修改菜品状态成功");

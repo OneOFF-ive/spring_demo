@@ -2,6 +2,7 @@ package com.five.spring_demo.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.five.spring_demo.common.CustomException;
 import com.five.spring_demo.dto.DishDto;
 import com.five.spring_demo.entity.Dish;
 import com.five.spring_demo.entity.DishFlavor;
@@ -62,10 +63,18 @@ public class DishServiceImpl extends ServiceImpl<DishMapper, Dish> implements Di
 
     @Override
     @Transactional
-    public void deleteWithFlavor(List<Long> id) {
-        this.removeByIds(id);
+    public void deleteWithFlavor(List<Long> ids) {
+        LambdaQueryWrapper<Dish> dishLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        dishLambdaQueryWrapper.in(Dish::getId, ids);
+        dishLambdaQueryWrapper.eq(Dish::getStatus, 1);
+        int count = this.count(dishLambdaQueryWrapper);
+        if (count > 0) {
+            throw new CustomException("菜品正在售卖中，不能删除");
+        }
+        this.removeByIds(ids);
+
         LambdaQueryWrapper<DishFlavor> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.in(DishFlavor::getDishId, id);
+        queryWrapper.in(DishFlavor::getDishId, ids);
         dishFlavorService.remove(queryWrapper);
     }
 }

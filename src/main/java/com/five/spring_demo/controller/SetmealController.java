@@ -1,8 +1,8 @@
 package com.five.spring_demo.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.five.spring_demo.dto.DishDto;
 import com.five.spring_demo.dto.SetmealDto;
 import com.five.spring_demo.entity.Category;
 import com.five.spring_demo.entity.Dish;
@@ -34,7 +34,7 @@ public class SetmealController {
 
 
     @PostMapping
-     R<String> save(@RequestBody SetmealDto setmealDto) {
+    public R<String> save(@RequestBody SetmealDto setmealDto) {
         setmealService.saveWithDish(setmealDto);
         return R.success("保存套餐成功");
     }
@@ -64,5 +64,20 @@ public class SetmealController {
         dtoPage.setRecords(list);
 
         return R.success(dtoPage);
+    }
+
+    @DeleteMapping
+    public R<String> delete(@RequestParam("ids") List<Long> ids) {
+        setmealService.removeWithDish(ids);
+        return R.success("套餐删除成功");
+    }
+
+    @PostMapping("/status/{status}")
+    public R<String> updateStatus(@PathVariable String status, @RequestParam("ids") List<Long> ids) {
+        UpdateWrapper<Setmeal> updateWrapper = new UpdateWrapper<>();
+        updateWrapper.in("id", ids)
+                .set("status", status);
+        setmealService.update(updateWrapper);
+        return R.success("修改套餐状态成功");
     }
 }
