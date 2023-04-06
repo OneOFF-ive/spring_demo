@@ -29,10 +29,7 @@ public class DishServiceImpl extends ServiceImpl<DishMapper, Dish> implements Di
 
         Long dishId = dishDto.getId();
         List<DishFlavor> flavors = dishDto.getFlavors();
-        flavors.stream().map((flavor) -> {
-            flavor.setDishId(dishId);
-            return flavor;
-        }).collect(Collectors.toList());
+        flavors.stream().peek((flavor) -> flavor.setDishId(dishId)).collect(Collectors.toList());
 
         dishFlavorService.saveBatch(dishDto.getFlavors());
     }
@@ -47,5 +44,26 @@ public class DishServiceImpl extends ServiceImpl<DishMapper, Dish> implements Di
         List<DishFlavor> flavors = dishFlavorService.list(queryWrapper);
         dishDto.setFlavors(flavors);
         return dishDto;
+    }
+
+    @Override
+    public void updateWithFlavor(DishDto dishDto) {
+        this.updateById(dishDto);
+
+        LambdaQueryWrapper<DishFlavor> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(DishFlavor::getDishId, dishDto.getId());
+        dishFlavorService.remove(queryWrapper);
+
+        List<DishFlavor> flavors = dishDto.getFlavors();
+        flavors.stream().peek((flavor) -> flavor.setDishId(dishDto.getId())).collect(Collectors.toList());
+        dishFlavorService.saveBatch(dishDto.getFlavors());
+    }
+
+    @Override
+    public void deleteWithFlavor(List<Long> id) {
+        this.removeByIds(id);
+        LambdaQueryWrapper<DishFlavor> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.in(DishFlavor::getDishId, id);
+        dishFlavorService.remove(queryWrapper);
     }
 }

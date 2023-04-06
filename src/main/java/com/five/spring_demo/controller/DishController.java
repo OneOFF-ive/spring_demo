@@ -1,6 +1,7 @@
 package com.five.spring_demo.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.five.spring_demo.common.R;
 import com.five.spring_demo.dto.DishDto;
@@ -69,5 +70,26 @@ public class DishController {
     R<DishDto> getDish(@PathVariable Long id) {
         DishDto dishDto = dishService.getByIdWithFlavor(id);
         return R.success(dishDto);
+    }
+
+    @PutMapping
+    R<String> updateDish(@RequestBody DishDto dishDto) {
+        dishService.updateWithFlavor(dishDto);
+        return R.success("菜品信息修改成功");
+    }
+
+    @PostMapping("/status/{status}")
+    R<String> updateStatus(@RequestParam("ids") Long[] ids, @PathVariable String status) {
+        UpdateWrapper<Dish> updateWrapper = new UpdateWrapper<>();
+        updateWrapper.in("id", (Object[]) ids)
+                        .set("status", status);
+        dishService.update(updateWrapper);
+        return R.success("修改菜品状态成功");
+    }
+
+    @DeleteMapping
+    R<String> delete(@RequestParam("ids") List<Long> ids) {
+        dishService.deleteWithFlavor(ids);
+        return R.success("菜品删除成功");
     }
 }
