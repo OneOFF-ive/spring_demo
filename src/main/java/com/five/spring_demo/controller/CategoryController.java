@@ -50,8 +50,14 @@ public class CategoryController {
         categoryService.update(category);
         return R.success("更新成功");
     }
-//
-//    @GetMapping("/list")
-//    R<List<>>
+
+    @GetMapping("/list")
+    public R<List<Category>> list(Category category) {
+        LambdaQueryWrapper<Category> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(category.getType() != null, Category::getType, category.getType());
+        queryWrapper.orderByAsc(Category::getSort).orderByDesc(Category::getUpdateTime);
+        List<Category> list = categoryService.list(queryWrapper);
+        return R.success(list);
+    }
 
 }
