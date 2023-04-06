@@ -5,7 +5,6 @@ import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.five.spring_demo.dto.SetmealDto;
 import com.five.spring_demo.entity.Category;
-import com.five.spring_demo.entity.Dish;
 import com.five.spring_demo.entity.Setmeal;
 import com.five.spring_demo.service.CategoryService;
 import com.five.spring_demo.service.SetMealDishService;
@@ -79,5 +78,17 @@ public class SetmealController {
                 .set("status", status);
         setmealService.update(updateWrapper);
         return R.success("修改套餐状态成功");
+    }
+
+    @GetMapping("/{id}")
+    public R<SetmealDto> getSetmeal(@PathVariable Long id) {
+        SetmealDto setmealDto = setmealService.getByIdWithDish(id);
+        return R.success(setmealDto);
+    }
+
+    @PutMapping
+    public R<String> update(@RequestBody SetmealDto setmealDto) {
+        setmealService.updateWithDish(setmealDto);
+        return R.success("套餐修改成功");
     }
 }
