@@ -6,6 +6,7 @@ import com.five.spring_demo.common.R;
 import com.five.spring_demo.dto.DishDto;
 import com.five.spring_demo.entity.Category;
 import com.five.spring_demo.entity.Dish;
+import com.five.spring_demo.entity.DishFlavor;
 import com.five.spring_demo.service.CategoryService;
 import com.five.spring_demo.service.DishFlavorService;
 import com.five.spring_demo.service.DishService;
@@ -62,5 +63,11 @@ public class DishController {
         dtoPage.setRecords(list);
 
         return R.success(dtoPage);
+    }
+
+    @GetMapping("/{id}")
+    R<DishDto> getDish(@PathVariable Long id) {
+        DishDto dishDto = dishService.getByIdWithFlavor(id);
+        return R.success(dishDto);
     }
 }
