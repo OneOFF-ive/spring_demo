@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.FileNotFoundException;
 import java.sql.SQLIntegrityConstraintViolationException;
 
 @Component
@@ -34,4 +35,9 @@ public class GlobalExceptionHandler {
         return R.error(e.getMessage());
     }
 
+    @ExceptionHandler(FileNotFoundException.class)
+    R<String> exceptHandler(FileNotFoundException e) {
+        log.error(e.getMessage());
+        return R.error(e.getMessage());
+    }
 }

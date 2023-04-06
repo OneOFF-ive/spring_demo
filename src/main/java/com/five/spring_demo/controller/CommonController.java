@@ -1,6 +1,7 @@
 package com.five.spring_demo.controller;
 
 import com.five.spring_demo.common.R;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,6 +20,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/common")
+@Slf4j
 public class CommonController {
 
     @Value("${reggie.path}")
@@ -39,7 +41,7 @@ public class CommonController {
         try {
             file.transferTo(new File(basePath + fileName));
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
         }
         return R.success(fileName);
     }
@@ -61,7 +63,7 @@ public class CommonController {
             outputStream.close();
             inputStream.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
         }
     }
 }
