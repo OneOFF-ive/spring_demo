@@ -14,7 +14,7 @@ class SpringDemoApplicationTests {
     @Test
     void contextLoads() {
         List<Integer> l = Arrays.asList(1, 2, 3, 4, 5);
-        l.stream().map(n -> n = n*2);
+        l.stream().peek(System.out::println).toArray();
         System.out.println(l);
     }
 
