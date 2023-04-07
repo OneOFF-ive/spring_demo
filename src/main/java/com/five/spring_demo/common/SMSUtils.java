@@ -26,8 +26,8 @@ public class SMSUtils {
 	 */
 	public static void sendMessage(String signName, String templateCode,String phoneNumbers,String param){
 		StaticCredentialProvider provider = StaticCredentialProvider.create(Credential.builder()
-				.accessKeyId("LTAI5tS9M6p8zuumsbtyRjP6")
-				.accessKeySecret("0n7dpmLnAeq1cbiFlWq9IAxQs33K7D")
+				.accessKeyId("accessKey")
+				.accessKeySecret("accessKeySecret")
 				.build());
 
 		AsyncClient client = AsyncClient.builder()
