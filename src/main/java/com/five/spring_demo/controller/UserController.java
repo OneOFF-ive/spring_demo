@@ -9,10 +9,7 @@ import com.five.spring_demo.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.util.Map;
@@ -57,8 +54,16 @@ public class UserController {
                 userService.save(user);
             }
             session.setAttribute("user", user.getId());
+            session.removeAttribute(phone);
             return R.success(user);
         }
         return R.error("登陆失败");
     }
+
+    @PostMapping("/logout")
+    public R<String> logout(HttpSession session) {
+        session.removeAttribute("user");
+        return R.success("退出成功");
+    }
+
 }

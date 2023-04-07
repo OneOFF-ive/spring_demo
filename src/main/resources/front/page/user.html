@@ -179,7 +179,7 @@
                     }
                 },
                 async toPageLogin(){
-                    const res = await loginoutApi()
+                    const res = await logoutApi()
                     if(res.code === 1){
                         window.requestAnimationFrame(()=>{
                             window.location.href = '/front/page/login.html'
