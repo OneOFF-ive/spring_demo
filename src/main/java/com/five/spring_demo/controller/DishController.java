@@ -95,12 +95,25 @@ public class DishController {
     }
 
     @GetMapping("/list")
-    R<List<Dish>> getDishByCategoryId(Dish dish) {
+    R<List<DishDto>> getDishByCategoryId(Dish dish) {
         LambdaQueryWrapper<Dish> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(dish.getCategoryId() != null, Dish::getCategoryId, dish.getCategoryId());
         queryWrapper.eq(Dish::getStatus, 1);
         queryWrapper.orderByAsc(Dish::getSort).orderByDesc(Dish::getUpdateTime);
         List<Dish> dishList = dishService.list(queryWrapper);
-        return R.success(dishList);
+
+        List<DishDto> dishDtoList = dishList.stream().map((item) -> {
+            Long dishId = item.getId();
+            LambdaQueryWrapper<DishFlavor> dishFlavorLambdaQueryWrapper = new LambdaQueryWrapper<>();
+            dishFlavorLambdaQueryWrapper.eq(DishFlavor::getDishId, dishId);
+            List<DishFlavor> flavors = dishFlavorService.list(dishFlavorLambdaQueryWrapper);
+
+            DishDto dishDto = new DishDto();
+            BeanUtils.copyProperties(item, dishDto);
+            dishDto.setFlavors(flavors);
+            return dishDto;
+        }).collect(Collectors.toList());
+
+        return R.success(dishDtoList);
     }
 }
