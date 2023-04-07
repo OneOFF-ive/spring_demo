@@ -1,5 +1,6 @@
 package com.five.spring_demo;
 
+import com.five.spring_demo.common.SMSUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -13,9 +14,7 @@ class SpringDemoApplicationTests {
 
     @Test
     void contextLoads() {
-        List<Integer> l = Arrays.asList(1, 2, 3, 4, 5);
-        l.stream().peek(System.out::println).toArray();
-        System.out.println(l);
+        SMSUtils.sendMessage("阿里云短信测试", "SMS_154950909", "18939162492", "1234");
     }
 
 }

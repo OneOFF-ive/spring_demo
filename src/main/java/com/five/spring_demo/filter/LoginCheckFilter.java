@@ -38,7 +38,9 @@ public class LoginCheckFilter implements Filter{
                 "/front/**",
                 "/swagger-ui.html",
                 "/swagger-resources/**",
-                "/webjars/**"
+                "/webjars/**",
+                "/user/sendMsg",
+                "/user/login"
         };
 
 
