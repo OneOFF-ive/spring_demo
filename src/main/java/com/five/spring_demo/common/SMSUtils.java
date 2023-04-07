@@ -6,6 +6,7 @@ import com.aliyun.sdk.service.dysmsapi20170525.models.*;
 import com.aliyun.sdk.service.dysmsapi20170525.*;
 import com.google.gson.Gson;
 import darabonba.core.client.ClientOverrideConfiguration;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
@@ -13,6 +14,7 @@ import java.util.concurrent.ExecutionException;
 /**
  * 短信发送工具类
  */
+@Slf4j
 public class SMSUtils {
 
 	/**
@@ -49,7 +51,7 @@ public class SMSUtils {
 		try {
 			resp = response.get();
 		} catch (InterruptedException | ExecutionException e) {
-			e.printStackTrace();
+			log.error(e.getMessage());
 		}
 		System.out.println(new Gson().toJson(resp));
 
