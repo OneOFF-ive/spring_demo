@@ -1,6 +1,5 @@
 package com.five.spring_demo.common;
 
-import org.apache.catalina.core.ApplicationContext;
 import org.springframework.beans.factory.config.YamlPropertiesFactoryBean;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.core.env.ConfigurableEnvironment;
