@@ -7,7 +7,10 @@ import com.aliyun.sdk.service.dysmsapi20170525.*;
 import com.google.gson.Gson;
 import darabonba.core.client.ClientOverrideConfiguration;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.stereotype.Component;
 
+import java.util.Properties;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
@@ -15,6 +18,7 @@ import java.util.concurrent.ExecutionException;
  * 短信发送工具类
  */
 @Slf4j
+@Component
 public class SMSUtils {
 
 	/**
@@ -25,9 +29,14 @@ public class SMSUtils {
 	 * @param param 参数
 	 */
 	public static void sendMessage(String signName, String templateCode,String phoneNumbers,String param){
+
+		AnnotationConfigApplicationContext applicationContext = BaseContext.getApplicationContext();
+		String accessKeyId = applicationContext.getEnvironment().getProperty("reggie.access-key-id");
+		String accessKeySecret = applicationContext.getEnvironment().getProperty("reggie.access-key-secret");
+
 		StaticCredentialProvider provider = StaticCredentialProvider.create(Credential.builder()
-				.accessKeyId("accessKey")
-				.accessKeySecret("accessKeySecret")
+				.accessKeyId(accessKeyId)
+				.accessKeySecret(accessKeySecret)
 				.build());
 
 		AsyncClient client = AsyncClient.builder()

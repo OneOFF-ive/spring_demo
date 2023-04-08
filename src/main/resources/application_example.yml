@@ -25,3 +25,5 @@ mybatis-plus:
 
 reggie:
   path: "D:\\"
+  access-key-id: "access-key-id"
+  access-key-secret: "access-key-secret"

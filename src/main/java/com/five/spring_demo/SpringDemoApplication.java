@@ -18,8 +18,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 public class SpringDemoApplication {
 
     public static void main(String[] args) {
-
-        AnnotationConfigApplicationContext applicationContext = new AnnotationConfigApplicationContext(MybatisPlusConfig.class);
         SpringApplication.run(SpringDemoApplication.class, args);
         log.info("项目启动成功");
     }
