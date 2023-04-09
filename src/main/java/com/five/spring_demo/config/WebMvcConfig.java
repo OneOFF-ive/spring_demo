@@ -34,7 +34,7 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
                 .addPathPatterns("/**")
                 .excludePathPatterns("/swagger-ui.html", "/swagger-resources/**",
                         "/webjars/**", "/employee/login", "/employee/logout",
-                        "/backend/**", "/front/**", "/user/sendMsg", "/user/login");
+                        "/backend/**", "/front/**", "/user/sendMsg", "/user/login", "/");
     }
 
     /**
