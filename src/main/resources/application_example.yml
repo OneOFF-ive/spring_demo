@@ -10,6 +10,18 @@ spring:
   mvc:
     path match:
       matching-strategy: ant_path_matcher
+  redis:
+    host: 139.196.48.244
+    port: 6379
+    password: 123456
+    database: 0
+    jedis:
+      pool:
+        enabled: true
+        max-active: 8
+        max-wait: 1ms
+        max-idle: 4
+        min-idle: 0
 
 
 
