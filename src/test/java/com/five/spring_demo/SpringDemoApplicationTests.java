@@ -1,20 +1,26 @@
 package com.five.spring_demo;
 
 import com.five.spring_demo.common.SMSUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.StringRedisTemplate;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 @SpringBootTest
 class SpringDemoApplicationTests {
 
+    @Autowired
+    RedisTemplate<Object, Object> redisTemplate;
+
+    @Autowired
+    StringRedisTemplate stringRedisTemplate;
+
     @Test
     void contextLoads() {
-        SMSUtils.sendMessage("阿里云短信测试", "SMS_154950909", "18939162492", "1234");
+        redisTemplate.opsForValue().set("test3", "this is a test3");
     }
 
 }
