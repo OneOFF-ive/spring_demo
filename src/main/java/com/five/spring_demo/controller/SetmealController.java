@@ -124,9 +124,6 @@ public class SetmealController {
 
     @GetMapping("/dish/{setmeal_id}")
     public R<List<Dish>> getDishById(@PathVariable Long setmeal_id) {
-//        LambdaQueryWrapper<SetmealDish> queryWrapper = new LambdaQueryWrapper<>();
-//        queryWrapper.eq(SetmealDish::getSetmealId, setmeal_id);
-//        List<SetmealDish> list = setMealDishService.list(queryWrapper);
         List<Dish> list = setMealDishService.getDishById(setmeal_id);
         return R.success(list);
     }
