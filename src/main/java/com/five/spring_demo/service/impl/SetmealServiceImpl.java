@@ -4,9 +4,11 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.five.spring_demo.common.CustomException;
 import com.five.spring_demo.dto.SetmealDto;
+import com.five.spring_demo.entity.Dish;
 import com.five.spring_demo.entity.Setmeal;
 import com.five.spring_demo.entity.SetmealDish;
 import com.five.spring_demo.mapper.SetmealMapper;
+import com.five.spring_demo.service.DishService;
 import com.five.spring_demo.service.SetMealDishService;
 import com.five.spring_demo.service.SetmealService;
 import org.springframework.beans.BeanUtils;
@@ -77,4 +79,5 @@ public class SetmealServiceImpl extends ServiceImpl<SetmealMapper, Setmeal> impl
         dishes.stream().peek((dish) -> dish.setSetmealId(setmealDto.getId())).collect(Collectors.toList());
         setMealDishService.saveBatch(setmealDto.getSetmealDishes());
     }
+
 }

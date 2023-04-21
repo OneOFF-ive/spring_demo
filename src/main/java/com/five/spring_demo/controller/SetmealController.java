@@ -3,7 +3,6 @@ package com.five.spring_demo.controller;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.five.spring_demo.dto.DishDto;
 import com.five.spring_demo.dto.SetmealDto;
 import com.five.spring_demo.entity.*;
 import com.five.spring_demo.service.CategoryService;
@@ -13,8 +12,10 @@ import com.five.spring_demo.service.SetmealService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.*;
 import com.five.spring_demo.common.R;
+
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -96,7 +97,9 @@ public class SetmealController {
         return R.success("套餐修改成功");
     }
 
+
     @GetMapping("/list")
+//    @Cacheable(value = "setmealCache", key = "#setmeal.categoryId + '_' + #setmeal.status")
     public R<List<SetmealDto>> list(Setmeal setmeal) {
         LambdaQueryWrapper<Setmeal> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(setmeal.getCategoryId() != null, Setmeal::getCategoryId, setmeal.getCategoryId());
@@ -120,10 +123,11 @@ public class SetmealController {
     }
 
     @GetMapping("/dish/{setmeal_id}")
-    public R<List<SetmealDish>> getDishById(@PathVariable Long setmeal_id) {
-        LambdaQueryWrapper<SetmealDish> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.eq(SetmealDish::getSetmealId, setmeal_id);
-        List<SetmealDish> list = setMealDishService.list(queryWrapper);
+    public R<List<Dish>> getDishById(@PathVariable Long setmeal_id) {
+//        LambdaQueryWrapper<SetmealDish> queryWrapper = new LambdaQueryWrapper<>();
+//        queryWrapper.eq(SetmealDish::getSetmealId, setmeal_id);
+//        List<SetmealDish> list = setMealDishService.list(queryWrapper);
+        List<Dish> list = setMealDishService.getDishById(setmeal_id);
         return R.success(list);
     }
 }
