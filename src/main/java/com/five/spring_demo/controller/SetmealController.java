@@ -12,6 +12,8 @@ import com.five.spring_demo.service.SetmealService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.CacheManager;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.*;
 import com.five.spring_demo.common.R;
@@ -36,8 +38,12 @@ public class SetmealController {
     @Autowired
     DishService dishService;
 
+    @Autowired
+    CacheManager cacheManager;
+
 
     @PostMapping
+    @CacheEvict(value = "setmealCache", allEntries = true)
     public R<String> save(@RequestBody SetmealDto setmealDto) {
         setmealService.saveWithDish(setmealDto);
         return R.success("保存套餐成功");
@@ -71,6 +77,7 @@ public class SetmealController {
     }
 
     @DeleteMapping
+    @CacheEvict(value = "setmealCache", allEntries = true)
     public R<String> delete(@RequestParam("ids") List<Long> ids) {
         setmealService.removeWithDish(ids);
         return R.success("套餐删除成功");
@@ -92,6 +99,7 @@ public class SetmealController {
     }
 
     @PutMapping
+    @CacheEvict(value = "setmealCache", allEntries = true)
     public R<String> update(@RequestBody SetmealDto setmealDto) {
         setmealService.updateWithDish(setmealDto);
         return R.success("套餐修改成功");
