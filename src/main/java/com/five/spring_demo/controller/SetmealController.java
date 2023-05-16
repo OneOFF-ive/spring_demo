@@ -3,6 +3,7 @@ package com.five.spring_demo.controller;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.five.spring_demo.dto.DishDto;
 import com.five.spring_demo.dto.SetmealDto;
 import com.five.spring_demo.entity.*;
 import com.five.spring_demo.service.CategoryService;
@@ -125,14 +126,14 @@ public class SetmealController {
             BeanUtils.copyProperties(item, setmealDto);
             setmealDto.setSetmealDishes(setmealDishes);
             return setmealDto;
-        }).collect(Collectors.toList());;
+        }).collect(Collectors.toList());
 
         return R.success(setmealDtoList);
     }
 
     @GetMapping("/dish/{setmeal_id}")
-    public R<List<Dish>> getDishById(@PathVariable Long setmeal_id) {
-        List<Dish> list = setMealDishService.getDishById(setmeal_id);
+    public R<List<DishDto>> getDishById(@PathVariable Long setmeal_id) {
+        List<DishDto> list = setMealDishService.getDishById(setmeal_id);
         return R.success(list);
     }
 }
