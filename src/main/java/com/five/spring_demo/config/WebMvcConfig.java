@@ -40,7 +40,6 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
     /**
      * 扩展MVC消息转换器
      *
-     * @param converters
      */
     @Override
     protected void extendMessageConverters(List<HttpMessageConverter<?>> converters) {

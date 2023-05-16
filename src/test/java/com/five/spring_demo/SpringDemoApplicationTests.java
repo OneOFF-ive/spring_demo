@@ -21,7 +21,6 @@ class SpringDemoApplicationTests {
     @Test
     void contextLoads() {
         redisTemplate.opsForValue().set("test3", "this is a test3");
-        redisTemplate.
     }
 
 }
