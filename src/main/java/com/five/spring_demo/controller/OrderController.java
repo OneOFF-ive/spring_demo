@@ -94,4 +94,12 @@ public class OrderController {
         orderService.updateById(order);
         return R.success("修改送达状态成功");
     }
+
+    @PostMapping("/again")
+    public R<String> again(@RequestBody Order order) {
+        Order newOrder = orderService.getById(order.getId());
+        orderService.again(newOrder);
+        return R.success("成功再来一单");
+    }
+
 }

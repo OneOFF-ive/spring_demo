@@ -5,4 +5,6 @@ import com.five.spring_demo.entity.Order;
 
 public interface OrderService extends IService<Order> {
     void submit(Order order);
+
+    void again(Order order);
 }

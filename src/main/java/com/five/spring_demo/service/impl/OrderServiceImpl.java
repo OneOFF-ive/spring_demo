@@ -8,6 +8,7 @@ import com.five.spring_demo.common.CustomException;
 import com.five.spring_demo.entity.*;
 import com.five.spring_demo.mapper.OrderMapper;
 import com.five.spring_demo.service.*;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -96,4 +97,33 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         //清空购物车数据
         shoppingCartService.remove(shoppingCartQueryWrapper);
     }
+
+    @Override
+    public void again(Order order) {
+        long newOrderId = IdWorker.getId();
+
+        LambdaQueryWrapper<OrderDetail> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(OrderDetail::getOrderId, order.getId());
+        List<OrderDetail> oldOrderDetailList = orderDetailService.list(queryWrapper);
+        List<OrderDetail> newOrderDetailList = oldOrderDetailList.stream().map(
+                (item) -> {
+                    OrderDetail orderDetail = new OrderDetail();
+                    BeanUtils.copyProperties(item, orderDetail);
+                    orderDetail.setOrderId(newOrderId);
+                    return orderDetail;
+                }
+        ).collect(Collectors.toList());
+        orderDetailService.saveBatch(newOrderDetailList);
+
+        Order newOrder = new Order();
+        BeanUtils.copyProperties(order, newOrder);
+        newOrder.setId(newOrderId);
+        newOrder.setNumber(String.valueOf(newOrderId));
+        newOrder.setOrderTime(LocalDateTime.now());
+        newOrder.setCheckoutTime(LocalDateTime.now());
+        newOrder.setStatus(2);
+        this.save(newOrder);
+    }
+
+
 }
