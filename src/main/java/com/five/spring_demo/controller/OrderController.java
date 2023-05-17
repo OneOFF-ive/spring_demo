@@ -2,6 +2,7 @@ package com.five.spring_demo.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.five.spring_demo.common.BaseContext;
 import com.five.spring_demo.common.R;
 import com.five.spring_demo.dto.OrderDto;
 import com.five.spring_demo.entity.Order;
@@ -32,7 +33,10 @@ public class OrderController {
     @GetMapping("/userPage")
     public R<Page<OrderDto>> userPage(@RequestParam("page") int page, @RequestParam("pageSize") int pageSize) {
         Page<Order> orderPage = new Page<>(page, pageSize);
+
+        Long userId = BaseContext.getCurrentId();
         LambdaQueryWrapper<Order> orderQueryWrapper = new LambdaQueryWrapper<>();
+        orderQueryWrapper.eq(userId != null, Order::getUserId, userId);
         orderQueryWrapper.orderByDesc(Order::getOrderTime);
         orderService.page(orderPage, orderQueryWrapper);
 
