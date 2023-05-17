@@ -24,7 +24,7 @@
             <div class="divUser">
                 <img src="./../images/headPage.png"/>
                 <div class="desc">
-                    <div class="divName">林之迷 <img src="./../images/women.png"/></div>
+                    <div class="divName">{{user.name}} <img src="./../images/women.png"/></div>
                     <div class="divPhone">{{userPhone}}</div>
                 </div>
             </div>
@@ -82,6 +82,7 @@
     <script src="./../js/request.js"></script>
     <script src="./../api/order.js"></script>
     <script src="./../api/login.js"></script>
+    <script src="./../api/main.js"></script>
     <script>
         new Vue({
             el:"#user",
@@ -102,6 +103,9 @@
                         amount:undefined,//实收金额
                         sumNum:0,//菜品总数
                     }],
+                    user: {
+                        name: "测试用户"
+                    },
                 }
             },
             computed:{},
@@ -126,6 +130,13 @@
                 },
                 initData(){
                     this.getLatestOrder()
+                    this.getUser()
+                },
+                async getUser() {
+                    const res = await getUserByPhone(this.userPhone)
+                    if (res.code === 1) {
+                        this.user = res.data
+                    }
                 },
                 async getLatestOrder(){
                     const params = {

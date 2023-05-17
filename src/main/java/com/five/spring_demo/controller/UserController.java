@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
+import javax.jws.soap.SOAPBinding;
 import javax.servlet.http.HttpSession;
 import java.sql.Time;
 import java.util.Map;
@@ -57,6 +58,7 @@ public class UserController {
             User user = userService.getOne(queryWrapper);
             if (user == null) {
                 user = new User();
+                user.setName(phone);
                 user.setPhone(phone);
                 user.setStatus(1);
                 userService.save(user);
@@ -72,6 +74,14 @@ public class UserController {
     public R<String> logout(HttpSession session) {
         session.removeAttribute("user");
         return R.success("退出成功");
+    }
+
+    @GetMapping("/{phone}")
+    public R<User> getUserByPhone(@PathVariable String phone) {
+        LambdaQueryWrapper<User> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(phone!=null, User::getPhone, phone);
+        User user = userService.getOne(queryWrapper);
+        return R.success(user);
     }
 
 }

@@ -67,4 +67,11 @@ function setMealDishDetailsApi(id) {
     })
 }
 
+//根据手机号查询用户
+function getUserByPhone(phone) {
+    return $axios({
+        'url': `/user/${phone}`,
+        'method': 'get',
+    })
+}
 
